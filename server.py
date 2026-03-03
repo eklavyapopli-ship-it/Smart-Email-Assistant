@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Query, UploadFile
 from typing import Annotated
-from rag.rag_worker import rag
+from rag_worker import rag
+from dotenv import load_dotenv
+load_dotenv()
 from rq_client import queue
 app = FastAPI()
 @app.get('/')
@@ -9,12 +11,14 @@ def read_root():
 @app.post("/uploadfile/")
 async def create_upload_file(file: UploadFile):
     try:
-        file_path = f"server/uploads/{file.filename}"
+        file_path = f"uploads/{file.filename}"
+        file_path = f"uploads/{file.filename}"
+
         with open(file_path, "wb") as f:
-            f.write(file.file.read())
-            if(f.name):
-                job = queue.enqueue(rag,file_path)
-                return {"message": "File saved successfully", "path": f"/uploads/{file.filename}","job":job.id}
+            f.write(await file.read())
+
+        job = queue.enqueue(rag, file_path)
+        return {"message": "File saved successfully", "path": f"/uploads/{file.filename}","job":job.id}
         
     except Exception as e:
         return {"message": e.args}
