@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_agent
 from langchain_community.tools.gmail.utils import (build_resource_service,get_gmail_credentials)
+from rag.retrieval import email
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 
@@ -23,10 +24,11 @@ toolkit = GmailToolkit(api_resource=api_resource)
 tools = toolkit.get_tools()
 agent_executor = create_agent(llm, tools)
 
-example_query = "Send an email to eklavyapopli@gmail.com thanking them for coffee, with a subject THANK YOU FOR COFFEE"
+query = "send an email to eklavyapopli@gmail.com sending the list of products and asking if they are interested or not. it should be professional and properly structured with new lines and spaces whereever needed"
+email_query = email(query=query)
 
 events = agent_executor.stream(
-    {"messages": [("user", example_query)]},
+    {"messages": [("user", email_query)]},
     stream_mode="values",
 )
 for event in events:
