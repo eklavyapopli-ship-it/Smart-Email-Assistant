@@ -13,7 +13,7 @@ async def create_upload_file(file: UploadFile):
         with open(file_path, "wb") as f:
             f.write(file.file.read())
             if(f.name):
-                job = queue.enqueue(rag,file.filename)
+                job = queue.enqueue(rag,file_path)
                 return {"message": "File saved successfully", "path": f"/uploads/{file.filename}","job":job.id}
         
     except Exception as e:
