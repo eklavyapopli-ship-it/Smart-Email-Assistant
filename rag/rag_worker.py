@@ -5,20 +5,23 @@ import os
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 load_dotenv()
-pdf_path = ""
-loader = PyPDFLoader(pdf_path)
-docs = loader.load()
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+def rag(pdf_path):
 
-chunks = text_splitter.split_documents(documents=docs)
+    loader = PyPDFLoader(pdf_path)
+    docs = loader.load()
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
 
-embeddingModel = GoogleGenerativeAIEmbeddings(model="gemini-embedding-001")
+    chunks = text_splitter.split_documents(documents=docs)
+
+    embeddingModel = GoogleGenerativeAIEmbeddings(model="gemini-embedding-001")
 
 
-vector_store = QdrantVectorStore.from_documents(
-    documents=chunks,
-    url=os.getenv("QDRANTDB_URI"),
-    collection_name="email_context",
-    embedding=embeddingModel,
-)
+    vector_store = QdrantVectorStore.from_documents(
+        documents=chunks,
+        url=os.getenv("QDRANTDB_URI"),
+        collection_name="email_context",
+        embedding=embeddingModel,
+    )
+    return "completed"
+
 
