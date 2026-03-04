@@ -12,7 +12,7 @@ def email(query):
     query = query
     search_results = QdrantVectorStore.from_existing_collection(
             url=os.getenv("QDRANTDB_URI"),
-        collection_name="email_context",
+        collection_name="backend_test",
         embedding=embeddingModel,
     ).similarity_search(
         query=query
