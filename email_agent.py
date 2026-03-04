@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_agent
 from langchain_community.tools.gmail.utils import (build_resource_service,get_gmail_credentials)
-from rag.retrieval import email
+from retrieval import email
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 

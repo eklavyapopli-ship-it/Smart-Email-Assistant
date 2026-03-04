@@ -6,7 +6,7 @@ BACKEND_URL = "http://localhost:8000"
 
 st.set_page_config(page_title="RAG Upload Dashboard", layout="centered")
 
-st.title("📂 RAG File Processor")
+st.title(" RAG File Processor For Email Context")
 
 uploaded_file = st.file_uploader("Upload a file", type=["pdf", "txt", "docx"])
 
