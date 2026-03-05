@@ -59,10 +59,8 @@ normal_llm → if the query is general or conversational and does NOT need retri
 def normal_llm(state: State):
     """
     Handles general queries using the entire conversation in state["messages"].
-    """
-    # Pass full messages list to LLM
+"""
     response = llm.invoke(state["messages"])
-    # Append only the new AI message for memory
     return {"messages": [response]}
 def queryNode(state: State):
 
@@ -90,10 +88,10 @@ graph_builder.add_node("query_node", queryNode)
 graph_builder.add_node("email_agent", agent_node)
 graph_builder.add_node("normal_llm", normal_llm)
 
-# Start → Router
+
 graph_builder.add_edge(START, "router_node")
 
-# Conditional edges from router
+
 graph_builder.add_conditional_edges(
     "router_node",
     lambda state: state["route"],
@@ -103,10 +101,10 @@ graph_builder.add_conditional_edges(
     }
 )
 
-# Flow after query_node
+
 graph_builder.add_edge("query_node", "email_agent")
 
-# End edges
+
 graph_builder.add_edge("email_agent", END)
 graph_builder.add_edge("normal_llm", END)
 def compile_graph_with_checkpointer(checkpointer):
@@ -121,7 +119,6 @@ def email_worker(query):
 
     config = {"configurable": {"thread_id": "khush"}}
 
-    # pass plain dict here, NOT State(initial_state)
     initial_state = {"messages": [HumanMessage(content=query)]}
     DB_URI = "mongodb://admin:admin@localhost:27017"
     with MongoDBSaver.from_conn_string(DB_URI) as checkpointer:
