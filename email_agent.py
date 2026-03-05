@@ -4,11 +4,8 @@ from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_agent
 from langgraph.graph import StateGraph, START, END, MessagesState
-from typing import Annotated
 from langchain.messages import HumanMessage, SystemMessage
 from langgraph.checkpoint.mongodb import MongoDBSaver
-from typing_extensions import TypedDict
-from langgraph.graph.message import add_messages
 from langchain_community.tools.gmail.utils import (build_resource_service,get_gmail_credentials)
 from retrieval import email
 load_dotenv()
@@ -120,7 +117,7 @@ def email_worker(query):
     config = {"configurable": {"thread_id": "khush"}}
 
     initial_state = {"messages": [HumanMessage(content=query)]}
-    DB_URI = "mongodb://admin:admin@localhost:27017"
+    DB_URI = os.getenv("MONGODB_URI")
     with MongoDBSaver.from_conn_string(DB_URI) as checkpointer:
         graph_with_checkpointer = compile_graph_with_checkpointer(checkpointer=checkpointer)
         config = {
