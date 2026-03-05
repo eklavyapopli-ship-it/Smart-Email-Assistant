@@ -49,7 +49,7 @@ normal_llm → if the query is general or conversational and does NOT need retri
 
     # Normalize
     route = decision.content.strip().lower()
-    if "query" in route:
+    if "query_node" in route:
         route = "query_node"
     else:
         route = "normal_llm"
