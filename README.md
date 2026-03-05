@@ -11,7 +11,6 @@ using background workers.
 ------------------------------------------------------------------------
 
 ## Features
-
 -   Context-aware email reply generation
 -   Retrieval-Augmented Generation (RAG)
 -   Gmail API integration for reading and sending emails
@@ -103,7 +102,8 @@ This starts: - Qdrant - Valkey
 
 ### 4. Run RQ Worker
 
-rq worker 
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES 
+python3 -m rq.cli worker
 
 ### 5. Start Backend
 

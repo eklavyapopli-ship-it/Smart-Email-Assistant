@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_agent
-from langgraph.graph import StateGraph, START, END
+from langgraph.graph import StateGraph, START, END, MessagesState
 from typing import Annotated
 from langchain.messages import HumanMessage, SystemMessage
 from langgraph.checkpoint.mongodb import MongoDBSaver
@@ -13,8 +13,8 @@ from langchain_community.tools.gmail.utils import (build_resource_service,get_gm
 from retrieval import email
 load_dotenv()
 
-class State(TypedDict):
-    messages: Annotated[list, add_messages]
+class State(MessagesState):
+    pass
 llm  = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
     
